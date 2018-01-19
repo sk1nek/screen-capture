@@ -2,10 +2,7 @@ package me.mjaroszewicz;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 
@@ -58,28 +55,26 @@ class CapturePane extends JPanel {
 
         getInputMap().put(KeyStroke.getKeyStroke(' '), "actionScreenShot");
 
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent keyEvent) {
+        InputMap im = getInputMap(WHEN_FOCUSED);
+        ActionMap am = getActionMap();
 
-                if(keyEvent.getKeyChar() == ' ') {
-                    BufferedImage bi = screenImage;
-                    Rectangle r = selection;
-                    System.out.println(bi.getWidth() + " " + bi.getHeight());
-                    capturedImage = bi.getSubimage(r.x, r.y, r.width, r.height);
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), "onSpace");
+        am.put("onSpace", new AbstractAction() {
+                    @Override
+                    public void actionPerformed(ActionEvent actionEvent) {
+                        BufferedImage bi = screenImage;
+                        Rectangle r = selection;
+                        capturedImage = bi.getSubimage(r.x, r.y, r.width, r.height);
 
+                        DataUtils.saveImageToClipboard(capturedImage);
 
-                    DataUtils.saveImageToClipboard(capturedImage);
+                        UI.deconstructCapturePane();
 
-                    UI.deconstructCapturePane();
-                }
-            }
-
-        });
+                    }
+                });
 
         addMouseListener(mouseAdapter);
         addMouseMotionListener(mouseAdapter);
-
     }
 
     @Override
