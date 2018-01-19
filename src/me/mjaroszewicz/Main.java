@@ -1,7 +1,6 @@
 package me.mjaroszewicz;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class Main {
 
@@ -9,8 +8,7 @@ public class Main {
 
         SwingUtilities.invokeLater(UI::new);
 
-        ScreenCapturer sc = new ScreenCapturer();
-        sc.captureScreen();
+
 
     }
 }
