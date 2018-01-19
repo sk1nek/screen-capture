@@ -66,7 +66,10 @@ class CapturePane extends JPanel {
                     BufferedImage bi = screenImage;
                     Rectangle r = selection;
                     System.out.println(bi.getWidth() + " " + bi.getHeight());
-                    capturedImage = bi.getSubimage(r.x, r.y, r.width,  r.height);
+                    capturedImage = bi.getSubimage(r.x, r.y, r.width, r.height);
+
+
+                    DataUtils.saveImageToClipboard(capturedImage);
 
                     UI.deconstructCapturePane();
                 }

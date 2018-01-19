@@ -2,26 +2,48 @@ package me.mjaroszewicz;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.geom.Area;
-import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 class UI {
 
     private static JFrame jframe;
     private static CapturePane capturePane;
+    private static JButton screenshotButton;
 
 
     UI(){
+        prepareGUI();
+    }
 
+    private void prepareGUI(){
         jframe = new JFrame();
-        jframe.setVisible(true);
-        capturePane = new CapturePane();
-        jframe.add(capturePane);
 
+        screenshotButton = new JButton("Screenshot");
+        screenshotButton.addActionListener(e -> {
+            jframe.remove(screenshotButton);
+            buildCapturePane();
+
+        });
+
+        jframe.setLocation(0, 0);
+        jframe.add(screenshotButton);
+        jframe.setUndecorated(true);
+        jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jframe.setVisible(true);
         jframe.pack();
+    }
+
+    private void buildCapturePane(){
+
+        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        Rectangle r = env.getMaximumWindowBounds();
+        Dimension d = new Dimension(r.width, r.height);
+
+        capturePane = new CapturePane();
+        capturePane.setPreferredSize(d);
+        capturePane.setLocation(0,0);
+        jframe.add(capturePane);
+        jframe.pack();
+        jframe.repaint();
     }
 
     static void deconstructCapturePane(){
