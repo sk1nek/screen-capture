@@ -9,6 +9,12 @@ class UI {
     private static CapturePane capturePane;
     private static JButton screenshotButton;
 
+    private static JButton startButton;
+    private static JButton stopButton;
+    private static JButton saveButton;
+
+    private ScreenCapturer screenCapturer;
+
 
     UI(){
         prepareGUI();
@@ -16,6 +22,9 @@ class UI {
 
     private void prepareGUI(){
         jframe = new JFrame();
+        jframe.setLayout(new GridLayout(3, 3));
+
+        screenCapturer = new ScreenCapturer();
 
         screenshotButton = new JButton("Screenshot");
         screenshotButton.addActionListener(e -> {
@@ -24,8 +33,28 @@ class UI {
 
         });
 
-        jframe.setLocation(0, 0);
+        startButton = new JButton("start");
+        startButton.addActionListener((e) -> screenCapturer.startRecording());
+        stopButton = new JButton("stop");
+        stopButton.addActionListener(e -> screenCapturer.stopRecording());
+        saveButton = new JButton("save");
+        saveButton.addActionListener(e -> {
+            try{
+                DataUtils.saveSequenceAsGif(screenCapturer.getFrames(), "filename");
+            }catch (Throwable t){
+                t.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Error has occured during gif processing");
+            }
+        });
+
         jframe.add(screenshotButton);
+        jframe.add(startButton);
+        jframe.add(stopButton);
+        jframe.add(saveButton);
+
+
+        jframe.setLocation(0, 0);
+
         jframe.setUndecorated(true);
         jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jframe.setVisible(true);
@@ -41,7 +70,13 @@ class UI {
         capturePane = new CapturePane();
         capturePane.setPreferredSize(d);
         capturePane.setLocation(0,0);
-        jframe.add(capturePane);
+
+        jframe.remove(startButton);
+        jframe.remove(saveButton);
+        jframe.remove(stopButton);
+        jframe.setLayout(new BorderLayout());
+
+        jframe.add(capturePane, BorderLayout.CENTER);
         jframe.pack();
         jframe.repaint();
     }

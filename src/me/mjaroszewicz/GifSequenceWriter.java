@@ -60,7 +60,8 @@ public class GifSequenceWriter {
     }
 
     public void writeToSequence(RenderedImage img) throws IOException{
-        imageWriter.writeToSequence(new IIOImage(img, null, metadata), params);
+            imageWriter.writeToSequence(new IIOImage(img, null, metadata), params);
+
     }
 
     public void close() throws IOException{

@@ -24,16 +24,14 @@ public class DataUtils {
 
         BufferedImage firstImage = list.get(0);
 
-        ImageOutputStream os = new FileImageOutputStream(new File(filename));
+        ImageOutputStream os = new FileImageOutputStream(new File(filename + "gif"));
 
         GifSequenceWriter writer = new GifSequenceWriter(firstImage, os);
 
         writer.writeToSequence(firstImage);
 
-        for(int i = 1; i < list.size() - 1; i++){
-            BufferedImage next = list.get(i);
-            writer.writeToSequence(next);
-        }
+        for(BufferedImage bi: list)
+            writer.writeToSequence(bi);
 
         writer.close();
         os.close();
