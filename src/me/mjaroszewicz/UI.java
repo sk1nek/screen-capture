@@ -25,6 +25,7 @@ public class UI extends JFrame{
         pack();
         invalidate();
         uiDestructionListener.destructionHappened(image);
+        dispose();
     }
 
 }
