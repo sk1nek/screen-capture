@@ -49,7 +49,6 @@ public class ScreenCapturer {
                 frames.add(frame);
             }
 
-
         });
 
     }

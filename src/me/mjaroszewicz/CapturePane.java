@@ -45,7 +45,7 @@ class CapturePane extends JPanel {
                 DataUtils.saveImageToClipboard(capturedImage);
 
                 UI ancestor = (UI) getTopLevelAncestor();
-                ancestor.destroyCapturePane();
+                ancestor.destroyCapturePane(capturedImage);
             }
 
             @Override

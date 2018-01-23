@@ -1,6 +1,7 @@
 package me.mjaroszewicz;
 
 import javax.swing.*;
+import java.lang.reflect.InvocationTargetException;
 
 public class Main {
 
