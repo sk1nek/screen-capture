@@ -13,14 +13,13 @@ class CapturePane extends JPanel {
 
     private ScreenCapturer capturer;
     private BufferedImage screenImage;
-
     private BufferedImage capturedImage;
+
 
     CapturePane(){
 
         this.capturer = new ScreenCapturer();
         screenImage = capturer.captureScreen();
-        setOpaque(false);
 
         MouseAdapter mouseAdapter = new MouseAdapter() {
             @Override
@@ -38,7 +37,15 @@ class CapturePane extends JPanel {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                clickPoint = null;
+
+                BufferedImage bi = screenImage;
+                Rectangle r = selection;
+                capturedImage = bi.getSubimage(r.x, r.y, r.width, r.height);
+
+                DataUtils.saveImageToClipboard(capturedImage);
+
+                UI ancestor = (UI) getTopLevelAncestor();
+                ancestor.destroyCapturePane();
             }
 
             @Override
@@ -52,26 +59,6 @@ class CapturePane extends JPanel {
                 repaint();
             }
         };
-
-        getInputMap().put(KeyStroke.getKeyStroke(' '), "actionScreenShot");
-
-        InputMap im = getInputMap(WHEN_FOCUSED);
-        ActionMap am = getActionMap();
-
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), "onSpace");
-        am.put("onSpace", new AbstractAction() {
-                    @Override
-                    public void actionPerformed(ActionEvent actionEvent) {
-                        BufferedImage bi = screenImage;
-                        Rectangle r = selection;
-                        capturedImage = bi.getSubimage(r.x, r.y, r.width, r.height);
-
-                        DataUtils.saveImageToClipboard(capturedImage);
-
-                        UI.deconstructCapturePane();
-
-                    }
-                });
 
         addMouseListener(mouseAdapter);
         addMouseMotionListener(mouseAdapter);

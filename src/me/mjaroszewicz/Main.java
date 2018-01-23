@@ -8,7 +8,5 @@ public class Main {
 
         SwingUtilities.invokeLater(UI::new);
 
-
-
     }
 }
