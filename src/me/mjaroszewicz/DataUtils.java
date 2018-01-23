@@ -13,6 +13,10 @@ public class DataUtils {
 
     private DataUtils(){}
 
+    /**
+     * Method that adds screenshot reference to clipboard. Keep in mind that data might be unnaccessible on some Xorg-based systems.
+     * @param bi image to be saves
+     */
     public static void saveImageToClipboard(BufferedImage bi){
 
         Clipboard c = Toolkit.getDefaultToolkit().getSystemClipboard();

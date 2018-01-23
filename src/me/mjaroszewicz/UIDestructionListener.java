@@ -9,7 +9,6 @@ public class UIDestructionListener {
 
     public UIDestructionListener(UI ui) {
         this.ui = ui;
-        System.out.println(ui.toString());
     }
 
     void destructionHappened(BufferedImage image){

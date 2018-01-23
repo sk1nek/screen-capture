@@ -24,7 +24,6 @@ public class UI extends JFrame{
         remove(capturePane);
         pack();
         invalidate();
-        dispose();
         uiDestructionListener.destructionHappened(image);
     }
 

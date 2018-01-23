@@ -15,7 +15,6 @@ class CapturePane extends JPanel {
     private BufferedImage screenImage;
     private BufferedImage capturedImage;
 
-
     CapturePane(){
 
         this.capturer = new ScreenCapturer();
@@ -38,11 +37,17 @@ class CapturePane extends JPanel {
             @Override
             public void mouseReleased(MouseEvent e) {
 
-                BufferedImage bi = screenImage;
-                Rectangle r = selection;
-                capturedImage = bi.getSubimage(r.x, r.y, r.width, r.height);
+                //left mouse button
+                if(e.getButton() == 1){
+                    BufferedImage bi = screenImage;
+                    Rectangle r = selection;
+                    capturedImage = bi.getSubimage(r.x, r.y, r.width, r.height);
+                }
+                else if(e.getButton() == 3){
 
-                DataUtils.saveImageToClipboard(capturedImage);
+                    //implement recording there
+                    System.out.println("Right lick. Implement it, dude. ");
+                }
 
                 UI ancestor = (UI) getTopLevelAncestor();
                 ancestor.destroyCapturePane(capturedImage);

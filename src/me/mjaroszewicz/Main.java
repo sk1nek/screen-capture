@@ -1,9 +1,10 @@
 package me.mjaroszewicz;
 
 import javax.swing.*;
-import java.lang.reflect.InvocationTargetException;
 
 public class Main {
+
+    //TODO - fix gif creation
 
     public static void main(String[] args) {
 
