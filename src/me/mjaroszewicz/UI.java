@@ -19,12 +19,12 @@ public class UI extends JFrame{
         setVisible(true);
     }
 
-    void destroyCapturePane(BufferedImage image) {
+    void destroyCapturePane(BufferedImage image, Rectangle r) {
         setVisible(false);
         remove(capturePane);
         pack();
         invalidate();
-        uiDestructionListener.destructionHappened(image);
+        uiDestructionListener.destructionHappened(image, r);
         dispose();
     }
 

@@ -1,6 +1,9 @@
 package me.mjaroszewicz;
 
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.List;
 
@@ -12,13 +15,21 @@ public class UIDestructionListener {
         this.ui = ui;
     }
 
-    void destructionHappened(BufferedImage image){
+    void destructionHappened(BufferedImage image, Rectangle rec){
+
+        switch(Main.getPreference("type")){
+
+            case "screenshot":
+                onFrameDestruction(image);
+                break;
+
+            case "gif":
+                onFrameDestruction(rec);
+        }
+
         onFrameDestruction(image);
     }
 
-    void destructionHappened(List<BufferedImage> images){
-        onFrameDestruction(images);
-    }
 
     private void onFrameDestruction(BufferedImage image){
 
@@ -38,11 +49,30 @@ public class UIDestructionListener {
 
     }
 
-    private void onFrameDestruction(List<BufferedImage> images){
+    private void onFrameDestruction(Rectangle rec){
 
-        DataUtils.saveSequenceAsGif(images);
+        ScreenCapturer sc = new ScreenCapturer(rec);
+        List<BufferedImage> frames = new ArrayList<>();
+
+        SwingUtilities.invokeLater(() -> {
+            sc.startRecording();
+
+            while (sc.getFrames().size() < 300){
+                try{
+                    Thread.sleep(1000L/30L);
+                }catch(Throwable t){}
+            }
+
+            sc.stopRecording();
+
+            frames.addAll(sc.getFrames());
+
+            DataUtils.saveSequenceAsGif(frames);
+        });
 
     }
+
+
 
 
 

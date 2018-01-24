@@ -37,6 +37,8 @@ class CapturePane extends JPanel {
             @Override
             public void mouseReleased(MouseEvent e) {
 
+
+
                 //left mouse button
                 if(e.getButton() == 1){
                     BufferedImage bi = screenImage;
@@ -50,7 +52,7 @@ class CapturePane extends JPanel {
                 }
 
                 UI ancestor = (UI) getTopLevelAncestor();
-                ancestor.destroyCapturePane(capturedImage);
+                ancestor.destroyCapturePane(capturedImage, selection);
             }
 
             @Override

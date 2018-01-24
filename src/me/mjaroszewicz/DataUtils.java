@@ -1,18 +1,12 @@
 package me.mjaroszewicz;
 
-import com.sun.imageio.plugins.jpeg.JPEGImageWriter;
-import com.sun.imageio.plugins.png.PNGImageWriter;
-
 import javax.imageio.ImageIO;
-import javax.imageio.ImageWriter;
-import javax.imageio.spi.ImageWriterSpi;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.imageio.stream.ImageOutputStream;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 public class DataUtils {

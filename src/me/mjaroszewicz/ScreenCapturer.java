@@ -20,6 +20,11 @@ public class ScreenCapturer {
         init();
     }
 
+    ScreenCapturer(Rectangle selection){
+        init();
+        this.selection = selection;
+    }
+
     private void init(){
 
         this.env = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -72,6 +77,7 @@ public class ScreenCapturer {
     public void stopRecording(){
         recordingThreadRunFlag = false;
     }
+
 
 
     public List<BufferedImage> getFrames(){
