@@ -14,9 +14,7 @@ class ScreenCapturer {
     private Robot robot;
     private List<BufferedImage> frames;
 
-    private Thread recordingThread;
     private Callable<List<BufferedImage>> recordingCallable;
-    private volatile boolean recordingThreadRunFlag = true; //false if stopped
     private Rectangle selection;
 
     private int frameLimit = 30;
@@ -42,26 +40,6 @@ class ScreenCapturer {
             System.exit(-1);
         }
 
-//        recordingThread = new Thread(() -> {
-//
-//            //if no selection is provided, whole screen gets captured
-//            if(selection == null)
-//                selection = env.getMaximumWindowBounds();
-//
-//            while(recordingThreadRunFlag || frames.size() == frameLimit){
-//                try{
-//                    Thread.sleep(1000L / 30);
-//                }catch (InterruptedException ex){
-//                    ex.printStackTrace();
-//                }
-//
-//                BufferedImage frame = robot.createScreenCapture(selection);
-//                frames.add(frame);
-//
-//            }
-//
-//        });
-
         recordingCallable = () -> {
 
             frames = new LinkedList<>();
@@ -83,7 +61,6 @@ class ScreenCapturer {
 
             return frames;
         };
-
     }
 
     public BufferedImage captureScreen(){
@@ -92,17 +69,6 @@ class ScreenCapturer {
 
         return robot.createScreenCapture(r);
 
-    }
-
-
-    public void startRecording(){
-        recordingThreadRunFlag = true;
-        frames = new LinkedList<>();
-        recordingThread.start();
-    }
-
-    public void stopRecording(){
-        recordingThreadRunFlag = false;
     }
 
     public List<BufferedImage> recordFrames(int n){
@@ -115,13 +81,6 @@ class ScreenCapturer {
             ex.printStackTrace();
         }
         return Collections.emptyList();
-    }
-
-
-
-
-    public List<BufferedImage> getFrames(){
-        return frames;
     }
 
 

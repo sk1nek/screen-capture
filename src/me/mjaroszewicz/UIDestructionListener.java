@@ -47,7 +47,7 @@ class UIDestructionListener {
 
         SwingUtilities.invokeLater(() -> {
 
-            List<BufferedImage> frames = new ArrayList<>();
+            List<BufferedImage> frames;
 
             String secondsString = Main.getPreference("seconds");
             int seconds = Integer.parseInt(secondsString);

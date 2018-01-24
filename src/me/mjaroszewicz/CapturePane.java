@@ -11,13 +11,12 @@ class CapturePane extends JPanel {
     private Rectangle selection;
     private Point clickPoint;
 
-    private ScreenCapturer capturer;
     private BufferedImage screenImage;
     private BufferedImage capturedImage;
 
     CapturePane(){
 
-        this.capturer = new ScreenCapturer();
+        ScreenCapturer capturer = new ScreenCapturer();
         screenImage = capturer.captureScreen();
 
         MouseAdapter mouseAdapter = new MouseAdapter() {
@@ -36,8 +35,6 @@ class CapturePane extends JPanel {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-
-
 
                 //left mouse button
                 if(e.getButton() == 1){
