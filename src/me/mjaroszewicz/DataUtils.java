@@ -1,5 +1,11 @@
 package me.mjaroszewicz;
 
+import com.sun.imageio.plugins.jpeg.JPEGImageWriter;
+import com.sun.imageio.plugins.png.PNGImageWriter;
+
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriter;
+import javax.imageio.spi.ImageWriterSpi;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.imageio.stream.ImageOutputStream;
 import java.awt.*;
@@ -24,11 +30,16 @@ public class DataUtils {
         c.setContents(new TransferableImage(bi), null);
     }
 
-    public static void saveSequenceAsGif(List<BufferedImage> list, String filename)throws IOException{
+    public static void saveSequenceAsGif(List<BufferedImage> list)throws IOException{
+
+        String filename = Main.getPreferences().get("filename");
+
+        if(filename == null || filename.isEmpty())
+            filename = "recording";
 
         BufferedImage firstImage = list.get(0);
 
-        ImageOutputStream os = new FileImageOutputStream(new File(filename + "gif"));
+        ImageOutputStream os = new FileImageOutputStream(new File(filename + ".gif"));
 
         GifSequenceWriter writer = new GifSequenceWriter(firstImage, os);
 
@@ -39,7 +50,28 @@ public class DataUtils {
 
         writer.close();
         os.close();
+    }
 
+    /**
+     * Saves image to file, using name specified in preferences. If no name is specified, "screenshot" is used.
+     * @param img image to be saved
+     */
+    public static void saveImageToFile(BufferedImage img){
+
+        String filename = Main.getPreferences().get("filename");
+
+        if(filename == null || filename.isEmpty())
+            filename = "screenshot";
+
+        try{
+            File output = new File(filename + ".png");
+            ImageIO.write(img, "png", output);
+
+        }catch(Throwable t){
+            t.printStackTrace();
+        }
+
+        System.out.println("Image successfully written to file " + filename);
     }
 }
 
