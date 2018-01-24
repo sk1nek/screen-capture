@@ -75,7 +75,7 @@ public class DataUtils {
             t.printStackTrace();
         }
 
-        System.out.println("Image successfully written to file " + filename);
+        System.out.println("Image successfully written to file " + filename + ".png");
     }
 }
 

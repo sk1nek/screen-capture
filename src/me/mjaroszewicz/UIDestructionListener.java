@@ -26,8 +26,6 @@ public class UIDestructionListener {
             case "gif":
                 onFrameDestruction(rec);
         }
-
-        onFrameDestruction(image);
     }
 
 
