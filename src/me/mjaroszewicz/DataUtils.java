@@ -6,6 +6,7 @@ import javax.imageio.stream.ImageOutputStream;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.image.BufferedImage;
+import java.awt.image.WritableRaster;
 import java.io.File;
 import java.util.List;
 
@@ -24,31 +25,34 @@ public class DataUtils {
         c.setContents(new TransferableImage(bi), null);
     }
 
+
     public static void saveSequenceAsGif(List<BufferedImage> list){
+
+        System.out.println("Saving GIF...");
 
         String filename = Main.getPreferences().get("filename");
 
         if(filename == null || filename.isEmpty())
             filename = "recording";
 
-        BufferedImage firstImage = list.get(0);
-
         try{
-            ImageOutputStream os = new FileImageOutputStream(new File(filename + ".gif"));
+            ImageOutputStream ios = new FileImageOutputStream(new File(filename + ".gif"));
 
-            GifSequenceWriter writer = new GifSequenceWriter(firstImage, os);
+            GifSequenceWriter writer = new GifSequenceWriter(ios, list.get(0).getType(), 1000 / 30, true);
 
-            writer.writeToSequence(firstImage);
-
-            for(BufferedImage bi: list)
-                writer.writeToSequence(bi);
+            for(BufferedImage i: list)
+                writer.writeToSequence(i);
 
             writer.close();
-            os.close();
+            ios.close();
+
         }catch(Throwable t){
             System.err.println("Couldn't save GIF image.");
             t.printStackTrace();
         }
+
+        System.out.println("GIF file saved.");
+
 
     }
 
