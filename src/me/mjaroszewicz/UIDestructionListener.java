@@ -4,16 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.EventListener;
 import java.util.List;
 
-public class UIDestructionListener {
-
-    UI ui;
-
-    public UIDestructionListener(UI ui) {
-        this.ui = ui;
-    }
+class UIDestructionListener {
 
     void destructionHappened(BufferedImage image, Rectangle rec){
 
@@ -50,21 +43,32 @@ public class UIDestructionListener {
     private void onFrameDestruction(Rectangle rec){
 
         ScreenCapturer sc = new ScreenCapturer(rec);
-        List<BufferedImage> frames = new ArrayList<>();
+
 
         SwingUtilities.invokeLater(() -> {
-            sc.startRecording();
 
-            while (sc.getFrames().size() < 300){
+            List<BufferedImage> frames = new ArrayList<>();
+
+            String secondsString = Main.getPreference("seconds");
+            int seconds = Integer.parseInt(secondsString);
+
+            System.out.println("Capture starting in: ");
+
+            for(int i = 3 ; i > 0 ; i--){
+
+                System.out.println(i);
+
                 try{
-                    Thread.sleep(1000L/30L);
-                }catch(Throwable t){}
+                    Thread.sleep(1000L);
+                }catch(Throwable t){
+                    t.printStackTrace();
+                }
             }
 
-            sc.stopRecording();
 
-            frames.addAll(sc.getFrames());
+            frames = sc.recordFrames(seconds * 30);
 
+            System.out.println(frames.size() + " frames recorded.");
             DataUtils.saveSequenceAsGif(frames);
         });
 

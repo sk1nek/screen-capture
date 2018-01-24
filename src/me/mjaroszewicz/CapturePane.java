@@ -95,10 +95,5 @@ class CapturePane extends JPanel {
 
     }
 
-    public BufferedImage getCapturedImage() {
-        return capturedImage;
-    }
-
-
 
 }

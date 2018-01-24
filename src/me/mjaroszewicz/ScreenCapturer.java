@@ -3,18 +3,23 @@ package me.mjaroszewicz;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
-public class ScreenCapturer {
+class ScreenCapturer {
 
     private GraphicsEnvironment env;
     private Robot robot;
     private List<BufferedImage> frames;
 
     private Thread recordingThread;
+    private Callable<List<BufferedImage>> recordingCallable;
     private volatile boolean recordingThreadRunFlag = true; //false if stopped
     private Rectangle selection;
+
+    private int frameLimit = 30;
 
     ScreenCapturer(){
         init();
@@ -37,33 +42,55 @@ public class ScreenCapturer {
             System.exit(-1);
         }
 
-        recordingThread = new Thread(() -> {
+//        recordingThread = new Thread(() -> {
+//
+//            //if no selection is provided, whole screen gets captured
+//            if(selection == null)
+//                selection = env.getMaximumWindowBounds();
+//
+//            while(recordingThreadRunFlag || frames.size() == frameLimit){
+//                try{
+//                    Thread.sleep(1000L / 30);
+//                }catch (InterruptedException ex){
+//                    ex.printStackTrace();
+//                }
+//
+//                BufferedImage frame = robot.createScreenCapture(selection);
+//                frames.add(frame);
+//
+//            }
+//
+//        });
 
-            //if no selection is provided, whole screen gets captured
-            if(selection == null)
+        recordingCallable = () -> {
+
+            frames = new LinkedList<>();
+
+            if (selection == null)
                 selection = env.getMaximumWindowBounds();
 
-            while(recordingThreadRunFlag){
-                try{
-                    Thread.sleep(1000L / 30);
-                }catch (InterruptedException ex){
-                    ex.printStackTrace();
-                }
+            while (frames.size() < frameLimit) {
 
                 BufferedImage frame = robot.createScreenCapture(selection);
                 frames.add(frame);
+
+                try {
+                    Thread.sleep(1000L / 30);
+                } catch (InterruptedException iex) {
+                    iex.printStackTrace();
+                }
             }
 
-        });
+            return frames;
+        };
 
     }
 
     public BufferedImage captureScreen(){
 
         Rectangle r = env.getMaximumWindowBounds();
-        BufferedImage ret = robot.createScreenCapture(r);
 
-        return ret;
+        return robot.createScreenCapture(r);
 
     }
 
@@ -77,6 +104,19 @@ public class ScreenCapturer {
     public void stopRecording(){
         recordingThreadRunFlag = false;
     }
+
+    public List<BufferedImage> recordFrames(int n){
+
+        this.frameLimit = n;
+
+        try{
+            return recordingCallable.call();
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
 
 
 

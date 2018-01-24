@@ -5,14 +5,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class Main {
+class Main {
 
-    private static final String[] allowedPreferenceKeys = {"type", "filename","storage"};
+    private static final String[] allowedPreferenceKeys = {"type", "filename","storage","seconds"};
 
     private static HashMap<String, String> preferences = new HashMap<>();
     private static HashSet<String> allowedPreferenceKeySet = new HashSet<>(Arrays.asList(allowedPreferenceKeys));
-
-    //TODO - fix gif creation
 
     public static void main(String[] args) {
 

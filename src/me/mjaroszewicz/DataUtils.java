@@ -6,11 +6,10 @@ import javax.imageio.stream.ImageOutputStream;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.image.BufferedImage;
-import java.awt.image.WritableRaster;
 import java.io.File;
 import java.util.List;
 
-public class DataUtils {
+class DataUtils {
 
     private DataUtils(){}
 

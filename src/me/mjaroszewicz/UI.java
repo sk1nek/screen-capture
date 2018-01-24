@@ -4,13 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class UI extends JFrame{
+class UI extends JFrame{
 
-    CapturePane capturePane = new CapturePane();
+    private CapturePane capturePane = new CapturePane();
     private UIDestructionListener uiDestructionListener;
 
     public UI(){
-        this.uiDestructionListener = new UIDestructionListener(this);
+        this.uiDestructionListener = new UIDestructionListener();
         setPreferredSize(new Dimension(0, 0));
         setUndecorated(true);
 
