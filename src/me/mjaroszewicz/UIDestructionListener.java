@@ -2,6 +2,7 @@ package me.mjaroszewicz;
 
 import java.awt.image.BufferedImage;
 import java.util.EventListener;
+import java.util.List;
 
 public class UIDestructionListener {
 
@@ -15,8 +16,35 @@ public class UIDestructionListener {
         onFrameDestruction(image);
     }
 
-    protected void onFrameDestruction(BufferedImage image){
-        DataUtils.saveImageToClipboard(image);
+    void destructionHappened(List<BufferedImage> images){
+        onFrameDestruction(images);
     }
+
+    private void onFrameDestruction(BufferedImage image){
+
+        switch(Main.getPreference("storage")){
+
+            case "file":
+                DataUtils.saveImageToFile(image);
+
+            case "clipboard":
+                DataUtils.saveImageToClipboard(image);
+                break;
+
+            default:
+                DataUtils.saveImageToClipboard(image);
+                break;
+        }
+
+    }
+
+    private void onFrameDestruction(List<BufferedImage> images){
+
+        DataUtils.saveSequenceAsGif(images);
+
+    }
+
+
+
 
 }

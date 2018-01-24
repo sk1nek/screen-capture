@@ -30,7 +30,7 @@ public class DataUtils {
         c.setContents(new TransferableImage(bi), null);
     }
 
-    public static void saveSequenceAsGif(List<BufferedImage> list)throws IOException{
+    public static void saveSequenceAsGif(List<BufferedImage> list){
 
         String filename = Main.getPreferences().get("filename");
 
@@ -39,17 +39,23 @@ public class DataUtils {
 
         BufferedImage firstImage = list.get(0);
 
-        ImageOutputStream os = new FileImageOutputStream(new File(filename + ".gif"));
+        try{
+            ImageOutputStream os = new FileImageOutputStream(new File(filename + ".gif"));
 
-        GifSequenceWriter writer = new GifSequenceWriter(firstImage, os);
+            GifSequenceWriter writer = new GifSequenceWriter(firstImage, os);
 
-        writer.writeToSequence(firstImage);
+            writer.writeToSequence(firstImage);
 
-        for(BufferedImage bi: list)
-            writer.writeToSequence(bi);
+            for(BufferedImage bi: list)
+                writer.writeToSequence(bi);
 
-        writer.close();
-        os.close();
+            writer.close();
+            os.close();
+        }catch(Throwable t){
+            System.err.println("Couldn't save GIF image.");
+            t.printStackTrace();
+        }
+
     }
 
     /**

@@ -7,7 +7,7 @@ import java.util.HashSet;
 
 public class Main {
 
-    private static final String[] allowedPreferenceKeys = {"type", "filename"};
+    private static final String[] allowedPreferenceKeys = {"type", "filename","storage"};
 
     private static HashMap<String, String> preferences = new HashMap<>();
     private static HashSet<String> allowedPreferenceKeySet = new HashSet<>(Arrays.asList(allowedPreferenceKeys));
@@ -55,6 +55,22 @@ public class Main {
             return false;
 
         return true;
+    }
+
+    /**
+     * Simple nullpointer-proof preference access method.
+     *
+     * @param k preference key
+     * @return preference value associated with provided key
+     */
+    public static String getPreference(String k){
+
+        String v = preferences.get(k);
+
+        if(v == null)
+            return "";
+
+        else return v;
     }
 
     public static HashMap<String, String> getPreferences(){
